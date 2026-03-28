@@ -1,0 +1,14 @@
+# torch is installed separately from CPU-only index in Dockerfile
+numpy>=1.26
+opencv-python-headless>=4.9
+Pillow>=10.0
+huggingface_hub>=0.28
+networkx>=3.2
+osmnx==2.1.0
+pyproj>=3.6
+rasterio>=1.3
+shapely>=2.0
+streamlit>=1.39
+streamlit-folium>=0.22
+folium>=0.17
+pytest>=8.0
