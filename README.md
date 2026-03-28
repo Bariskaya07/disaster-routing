@@ -1,5 +1,5 @@
 ---
-title: TUA Disaster Routing MVP
+title:  Disaster Routing MVP
 emoji: 🛰️
 colorFrom: gray
 colorTo: red
@@ -7,7 +7,7 @@ sdk: docker
 app_port: 7860
 ---
 
-# TUA Disaster Routing MVP
+# Disaster Routing MVP
 
 This repository implements a hackathon-ready MVP for disaster response routing from pre/post satellite imagery.
 
