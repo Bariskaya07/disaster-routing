@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from io import BytesIO
 from pathlib import Path
+from urllib.error import URLError
+from urllib.request import urlopen
 
 import cv2
 import folium
@@ -22,6 +24,7 @@ DEMO_DIR = Path(__file__).resolve().parent / "data" / "demo"
 DEMO_PRE = DEMO_DIR / "pre_disaster.png"
 DEMO_POST = DEMO_DIR / "post_disaster.png"
 DEMO_METADATA = DEMO_DIR / "metadata.json"
+DEMO_REMOTE_BASE = "https://raw.githubusercontent.com/Bariskaya07/disaster-routing/main/data/demo"
 DEMO_LIBRARY_DIR = Path(__file__).resolve().parent / "data" / "demo_library"
 DEMO_LIBRARY_MANIFEST = DEMO_LIBRARY_DIR / "manifest.json"
 
@@ -57,6 +60,29 @@ def _default_point(metadata: dict, key: str, fallback: tuple[float, float]) -> t
     if point is None:
         return fallback
     return float(point[0]), float(point[1])
+
+
+def _download_demo_asset_if_missing(path: Path, remote_name: str) -> None:
+    if path.exists():
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    remote_url = f"{DEMO_REMOTE_BASE}/{remote_name}"
+    try:
+        with urlopen(remote_url, timeout=20) as response:
+            path.write_bytes(response.read())
+    except URLError as error:
+        raise FileNotFoundError(f"Demo dosyası indirilemedi: {remote_url}") from error
+
+
+def _ensure_local_demo_assets() -> None:
+    if DEMO_METADATA.exists() and DEMO_PRE.exists() and DEMO_POST.exists():
+        return
+    if not DEMO_METADATA.exists():
+        raise FileNotFoundError(
+            "Demo metadata dosyası eksik. 'data/demo/metadata.json' bulunamadı."
+        )
+    _download_demo_asset_if_missing(DEMO_PRE, "pre_disaster.png")
+    _download_demo_asset_if_missing(DEMO_POST, "post_disaster.png")
 
 
 def _demo_assets_available() -> bool:
@@ -104,9 +130,9 @@ def _demo_scene_assets_available(scene: dict) -> bool:
 
 def _selected_demo_metadata(scene: dict | None) -> dict:
     if scene is None:
-        if not _demo_assets_available():
+        if not DEMO_METADATA.exists():
             raise FileNotFoundError(
-                "Demo dosyaları eksik. 'data/demo/' altına pre_disaster.png, post_disaster.png ve metadata.json koymalısınız."
+                "Demo metadata dosyası eksik. 'data/demo/metadata.json' bulunamadı."
             )
         return parse_metadata(DEMO_METADATA)
 
@@ -131,10 +157,7 @@ def _selected_demo_metadata(scene: dict | None) -> dict:
 
 def _load_demo_assets(scene: dict | None = None) -> tuple[np.ndarray, np.ndarray, dict]:
     if scene is None:
-        if not _demo_assets_available():
-            raise FileNotFoundError(
-                "Demo dosyaları eksik. 'data/demo/' altına pre_disaster.png, post_disaster.png ve metadata.json koymalısınız."
-            )
+        _ensure_local_demo_assets()
         return _read_image_path(DEMO_PRE), _read_image_path(DEMO_POST), _selected_demo_metadata(None)
 
     if not _demo_scene_assets_available(scene):
