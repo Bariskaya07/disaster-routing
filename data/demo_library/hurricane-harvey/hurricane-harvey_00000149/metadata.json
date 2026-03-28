@@ -1,0 +1,25 @@
+{
+  "scene_id": "hurricane-harvey_00000149",
+  "disaster": "hurricane-harvey",
+  "bbox": [
+    -95.63062233549238,
+    29.85860749019655,
+    -95.62556446077849,
+    29.863016110117282
+  ],
+  "start": [
+    29.859401041782284,
+    -95.62971191804388
+  ],
+  "goal": [
+    29.86222255853155,
+    -95.62647487822699
+  ],
+  "crs": "EPSG:4326",
+  "bbox_estimation": {
+    "method": "affine-fit-from-xview2-label-pairs",
+    "fit_rmse_lon": 1.635461689310166e-08,
+    "fit_rmse_lat": 6.853504097721497e-09,
+    "point_pairs": 6793.0
+  }
+}

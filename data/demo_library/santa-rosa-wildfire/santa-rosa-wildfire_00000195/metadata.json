@@ -1,0 +1,25 @@
+{
+  "scene_id": "santa-rosa-wildfire_00000195",
+  "disaster": "santa-rosa-wildfire",
+  "bbox": [
+    -122.74664299543417,
+    38.5014548575577,
+    -122.7413700594872,
+    38.505598347365776
+  ],
+  "start": [
+    38.50220068572315,
+    -122.74569386696372
+  ],
+  "goal": [
+    38.50485251920032,
+    -122.74231918795765
+  ],
+  "crs": "EPSG:4326",
+  "bbox_estimation": {
+    "method": "affine-fit-from-xview2-label-pairs",
+    "fit_rmse_lon": 2.1661374371726776e-08,
+    "fit_rmse_lat": 7.787884941488894e-09,
+    "point_pairs": 2154.0
+  }
+}

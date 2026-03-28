@@ -8,6 +8,16 @@ __pycache__/
 venv/
 data/weights/
 data/demo_library/
+!data/demo_library/
+!data/demo_library/README.md
+!data/demo_library/manifest.json
+!data/demo_library/*/
+!data/demo_library/*/*/
+!data/demo_library/*/*/pre_disaster.png
+!data/demo_library/*/*/post_disaster.png
+!data/demo_library/*/*/metadata.json
+data/demo_library/*/*/*_label.json
+data/demo_library/*/*/*_target.png
 cache/
 .claude/
 .codex

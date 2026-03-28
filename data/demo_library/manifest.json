@@ -1,0 +1,583 @@
+{
+  "source_archive": "/home/bariskaya/Projelerim/TUA/hold_images_labels_targets.tar",
+  "selection_limit_per_disaster": 5,
+  "scenes": [
+    {
+      "scene_id": "santa-rosa-wildfire_00000157",
+      "disaster": "santa-rosa-wildfire",
+      "score": 813,
+      "destroyed": 271,
+      "major": 0,
+      "minor": 0,
+      "no_damage": 0,
+      "unclassified": 0,
+      "total": 271,
+      "bbox": [
+        -122.75171215659645,
+        38.47554594363858,
+        -122.7464389746853,
+        38.47969111809778
+      ],
+      "start": [
+        38.476292075041236,
+        -122.75076298385245
+      ],
+      "goal": [
+        38.478944986695126,
+        -122.7473881474293
+      ],
+      "relative_dir": "santa-rosa-wildfire/santa-rosa-wildfire_00000157",
+      "bbox_fit_rmse_lon": 2.460991445107084e-08,
+      "bbox_fit_rmse_lat": 9.037789903270108e-09
+    },
+    {
+      "scene_id": "santa-rosa-wildfire_00000010",
+      "disaster": "santa-rosa-wildfire",
+      "score": 375,
+      "destroyed": 120,
+      "major": 5,
+      "minor": 5,
+      "no_damage": 5,
+      "unclassified": 0,
+      "total": 135,
+      "bbox": [
+        -122.74639552958358,
+        38.492070073961955,
+        -122.74112078359957,
+        38.49621548735924
+      ],
+      "start": [
+        38.492816248373465,
+        -122.74544607530646
+      ],
+      "goal": [
+        38.495469312947726,
+        -122.74207023787669
+      ],
+      "relative_dir": "santa-rosa-wildfire/santa-rosa-wildfire_00000010",
+      "bbox_fit_rmse_lon": 1.8905028483707834e-08,
+      "bbox_fit_rmse_lat": 9.438030307656463e-09
+    },
+    {
+      "scene_id": "santa-rosa-wildfire_00000029",
+      "disaster": "santa-rosa-wildfire",
+      "score": 281,
+      "destroyed": 93,
+      "major": 1,
+      "minor": 0,
+      "no_damage": 70,
+      "unclassified": 0,
+      "total": 164,
+      "bbox": [
+        -122.7043838077928,
+        38.475433941298796,
+        -122.69910796716022,
+        38.47958123301882
+      ],
+      "start": [
+        38.476180453808404,
+        -122.70343415647893
+      ],
+      "goal": [
+        38.47883472050921,
+        -122.70005761847408
+      ],
+      "relative_dir": "santa-rosa-wildfire/santa-rosa-wildfire_00000029",
+      "bbox_fit_rmse_lon": 2.1715836368723135e-08,
+      "bbox_fit_rmse_lat": 8.319561701424887e-09
+    },
+    {
+      "scene_id": "santa-rosa-wildfire_00000195",
+      "disaster": "santa-rosa-wildfire",
+      "score": 270,
+      "destroyed": 90,
+      "major": 0,
+      "minor": 0,
+      "no_damage": 2,
+      "unclassified": 0,
+      "total": 92,
+      "bbox": [
+        -122.74664299543417,
+        38.5014548575577,
+        -122.7413700594872,
+        38.505598347365776
+      ],
+      "start": [
+        38.50220068572315,
+        -122.74569386696372
+      ],
+      "goal": [
+        38.50485251920032,
+        -122.74231918795765
+      ],
+      "relative_dir": "santa-rosa-wildfire/santa-rosa-wildfire_00000195",
+      "bbox_fit_rmse_lon": 2.1661374371726776e-08,
+      "bbox_fit_rmse_lat": 7.787884941488894e-09
+    },
+    {
+      "scene_id": "santa-rosa-wildfire_00000342",
+      "disaster": "santa-rosa-wildfire",
+      "score": 225,
+      "destroyed": 75,
+      "major": 0,
+      "minor": 0,
+      "no_damage": 1,
+      "unclassified": 1,
+      "total": 77,
+      "bbox": [
+        -122.6953462819835,
+        38.48807376359054,
+        -122.69006896707762,
+        38.49222147833908
+      ],
+      "start": [
+        38.48882035224528,
+        -122.69439636530045
+      ],
+      "goal": [
+        38.49147488968435,
+        -122.69101888376068
+      ],
+      "relative_dir": "santa-rosa-wildfire/santa-rosa-wildfire_00000342",
+      "bbox_fit_rmse_lon": 2.5206511493756967e-08,
+      "bbox_fit_rmse_lat": 8.835434793745933e-09
+    },
+    {
+      "scene_id": "palu-tsunami_00000180",
+      "disaster": "palu-tsunami",
+      "score": 557,
+      "destroyed": 185,
+      "major": 1,
+      "minor": 0,
+      "no_damage": 222,
+      "unclassified": 0,
+      "total": 408,
+      "bbox": [
+        119.90569266505831,
+        -0.9434407565274092,
+        119.91027711550085,
+        -0.9388260403888514
+      ],
+      "start": [
+        -0.9426101076224688,
+        119.90651786613796
+      ],
+      "goal": [
+        -0.9396566892937919,
+        119.9094519144212
+      ],
+      "relative_dir": "palu-tsunami/palu-tsunami_00000180",
+      "bbox_fit_rmse_lon": 8.97279310187203e-10,
+      "bbox_fit_rmse_lat": 1.3588427939702606e-09
+    },
+    {
+      "scene_id": "palu-tsunami_00000031",
+      "disaster": "palu-tsunami",
+      "score": 416,
+      "destroyed": 118,
+      "major": 31,
+      "minor": 0,
+      "no_damage": 0,
+      "unclassified": 0,
+      "total": 149,
+      "bbox": [
+        119.88190731488929,
+        -0.8232304352803211,
+        119.88649090162639,
+        -0.8186164388342924
+      ],
+      "start": [
+        -0.8223999159200359,
+        119.88273236050196
+      ],
+      "goal": [
+        -0.8194469581945776,
+        119.88566585601372
+      ],
+      "relative_dir": "palu-tsunami/palu-tsunami_00000031",
+      "bbox_fit_rmse_lon": 2.1364253488669703e-10,
+      "bbox_fit_rmse_lat": 2.0124063882003852e-10
+    },
+    {
+      "scene_id": "palu-tsunami_00000093",
+      "disaster": "palu-tsunami",
+      "score": 400,
+      "destroyed": 90,
+      "major": 65,
+      "minor": 0,
+      "no_damage": 298,
+      "unclassified": 6,
+      "total": 459,
+      "bbox": [
+        119.86814128064323,
+        -0.883461007095947,
+        119.87272516172614,
+        -0.8788467852834727
+      ],
+      "start": [
+        -0.8826304471697016,
+        119.86896637923816
+      ],
+      "goal": [
+        -0.8796773452097181,
+        119.8719000631312
+      ],
+      "relative_dir": "palu-tsunami/palu-tsunami_00000093",
+      "bbox_fit_rmse_lon": 5.869030210351795e-10,
+      "bbox_fit_rmse_lat": 7.026888128983125e-10
+    },
+    {
+      "scene_id": "palu-tsunami_00000063",
+      "disaster": "palu-tsunami",
+      "score": 357,
+      "destroyed": 103,
+      "major": 24,
+      "minor": 0,
+      "no_damage": 176,
+      "unclassified": 4,
+      "total": 307,
+      "bbox": [
+        119.83609954408347,
+        -0.9111506304306543,
+        119.84068365502206,
+        -0.9065362132774912
+      ],
+      "start": [
+        -0.9103200353430849,
+        119.83692468405242
+      ],
+      "goal": [
+        -0.9073668083650606,
+        119.83985851505311
+      ],
+      "relative_dir": "palu-tsunami/palu-tsunami_00000063",
+      "bbox_fit_rmse_lon": 7.702737233792237e-10,
+      "bbox_fit_rmse_lat": 9.53219731728182e-10
+    },
+    {
+      "scene_id": "palu-tsunami_00000060",
+      "disaster": "palu-tsunami",
+      "score": 357,
+      "destroyed": 95,
+      "major": 36,
+      "minor": 0,
+      "no_damage": 172,
+      "unclassified": 3,
+      "total": 306,
+      "bbox": [
+        119.83607832702054,
+        -0.8834858020253625,
+        119.84066230042757,
+        -0.8788714817276493
+      ],
+      "start": [
+        -0.8826552243717741,
+        119.8369034422338
+      ],
+      "goal": [
+        -0.8797020593812377,
+        119.83983718521431
+      ],
+      "relative_dir": "palu-tsunami/palu-tsunami_00000060",
+      "bbox_fit_rmse_lon": 9.042665711732746e-10,
+      "bbox_fit_rmse_lat": 1.1042419129884217e-09
+    },
+    {
+      "scene_id": "hurricane-harvey_00000149",
+      "disaster": "hurricane-harvey",
+      "score": 537,
+      "destroyed": 0,
+      "major": 205,
+      "minor": 127,
+      "no_damage": 0,
+      "unclassified": 0,
+      "total": 332,
+      "bbox": [
+        -95.63062233549238,
+        29.85860749019655,
+        -95.62556446077849,
+        29.863016110117282
+      ],
+      "start": [
+        29.859401041782284,
+        -95.62971191804388
+      ],
+      "goal": [
+        29.86222255853155,
+        -95.62647487822699
+      ],
+      "relative_dir": "hurricane-harvey/hurricane-harvey_00000149",
+      "bbox_fit_rmse_lon": 1.635461689310166e-08,
+      "bbox_fit_rmse_lat": 6.853504097721497e-09
+    },
+    {
+      "scene_id": "hurricane-harvey_00000198",
+      "disaster": "hurricane-harvey",
+      "score": 424,
+      "destroyed": 4,
+      "major": 206,
+      "minor": 0,
+      "no_damage": 0,
+      "unclassified": 0,
+      "total": 210,
+      "bbox": [
+        -95.64054295251914,
+        29.770506190045083,
+        -95.63548751624596,
+        29.77491657797314
+      ],
+      "start": [
+        29.771300059872132,
+        -95.63963297398996
+      ],
+      "goal": [
+        29.77412270814609,
+        -95.63639749477514
+      ],
+      "relative_dir": "hurricane-harvey/hurricane-harvey_00000198",
+      "bbox_fit_rmse_lon": 1.718738973627347e-08,
+      "bbox_fit_rmse_lat": 6.730072227441326e-09
+    },
+    {
+      "scene_id": "hurricane-harvey_00000490",
+      "disaster": "hurricane-harvey",
+      "score": 382,
+      "destroyed": 3,
+      "major": 182,
+      "minor": 9,
+      "no_damage": 0,
+      "unclassified": 0,
+      "total": 194,
+      "bbox": [
+        -95.53823572673132,
+        29.747451459870806,
+        -95.53318611129271,
+        29.751857843212033
+      ],
+      "start": [
+        29.748244608872227,
+        -95.53732679595237
+      ],
+      "goal": [
+        29.751064694210612,
+        -95.53409504207166
+      ],
+      "relative_dir": "hurricane-harvey/hurricane-harvey_00000490",
+      "bbox_fit_rmse_lon": 1.2709422335564527e-08,
+      "bbox_fit_rmse_lat": 4.374198059699687e-09
+    },
+    {
+      "scene_id": "hurricane-harvey_00000404",
+      "disaster": "hurricane-harvey",
+      "score": 361,
+      "destroyed": 0,
+      "major": 155,
+      "minor": 51,
+      "no_damage": 2,
+      "unclassified": 0,
+      "total": 208,
+      "bbox": [
+        -95.59662964629646,
+        29.75234637534809,
+        -95.59157717691483,
+        29.756754998335367
+      ],
+      "start": [
+        29.7531399274858,
+        -95.59572020180777
+      ],
+      "goal": [
+        29.755961446197656,
+        -95.59248662140352
+      ],
+      "relative_dir": "hurricane-harvey/hurricane-harvey_00000404",
+      "bbox_fit_rmse_lon": 1.816129321645491e-08,
+      "bbox_fit_rmse_lat": 7.089876074735641e-09
+    },
+    {
+      "scene_id": "hurricane-harvey_00000372",
+      "disaster": "hurricane-harvey",
+      "score": 313,
+      "destroyed": 20,
+      "major": 120,
+      "minor": 13,
+      "no_damage": 0,
+      "unclassified": 2,
+      "total": 155,
+      "bbox": [
+        -95.55720685550202,
+        29.757428533141926,
+        -95.55215566203624,
+        29.761835835354667
+      ],
+      "start": [
+        29.75822184754022,
+        -95.55629764067818
+      ],
+      "goal": [
+        29.761042520956373,
+        -95.55306487686008
+      ],
+      "relative_dir": "hurricane-harvey/hurricane-harvey_00000372",
+      "bbox_fit_rmse_lon": 1.8016166749929776e-08,
+      "bbox_fit_rmse_lat": 6.978812638336992e-09
+    },
+    {
+      "scene_id": "mexico-earthquake_00000091",
+      "disaster": "mexico-earthquake",
+      "score": 8,
+      "destroyed": 0,
+      "major": 0,
+      "minor": 8,
+      "no_damage": 164,
+      "unclassified": 0,
+      "total": 172,
+      "bbox": [
+        -99.20023224992052,
+        19.26427350861125,
+        -99.19550822422653,
+        19.268759737238497
+      ],
+      "start": [
+        19.265081029764154,
+        -99.1993819252956
+      ],
+      "goal": [
+        19.267952216085593,
+        -99.19635854885145
+      ],
+      "relative_dir": "mexico-earthquake/mexico-earthquake_00000091",
+      "bbox_fit_rmse_lon": 2.341747214898514e-09,
+      "bbox_fit_rmse_lat": 1.6095902197442485e-09
+    },
+    {
+      "scene_id": "mexico-earthquake_00000073",
+      "disaster": "mexico-earthquake",
+      "score": 7,
+      "destroyed": 0,
+      "major": 2,
+      "minor": 3,
+      "no_damage": 142,
+      "unclassified": 0,
+      "total": 147,
+      "bbox": [
+        -99.20974948537025,
+        19.326997954474145,
+        -99.20502344799554,
+        19.331484377838027
+      ],
+      "start": [
+        19.327805510679642,
+        -99.2088987986428
+      ],
+      "goal": [
+        19.33067682163253,
+        -99.20587413472299
+      ],
+      "relative_dir": "mexico-earthquake/mexico-earthquake_00000073",
+      "bbox_fit_rmse_lon": 9.236351263181442e-09,
+      "bbox_fit_rmse_lat": 4.035597343757918e-09
+    },
+    {
+      "scene_id": "mexico-earthquake_00000081",
+      "disaster": "mexico-earthquake",
+      "score": 6,
+      "destroyed": 0,
+      "major": 1,
+      "minor": 4,
+      "no_damage": 272,
+      "unclassified": 0,
+      "total": 277,
+      "bbox": [
+        -99.21444658590663,
+        19.309068223143775,
+        -99.20972091605314,
+        19.313554771507786
+      ],
+      "start": [
+        19.309875801849298,
+        -99.213595965333
+      ],
+      "goal": [
+        19.312747192802263,
+        -99.21057153662677
+      ],
+      "relative_dir": "mexico-earthquake/mexico-earthquake_00000081",
+      "bbox_fit_rmse_lon": 1.0192983469217756e-08,
+      "bbox_fit_rmse_lat": 4.666949772989267e-09
+    },
+    {
+      "scene_id": "mexico-earthquake_00000116",
+      "disaster": "mexico-earthquake",
+      "score": 6,
+      "destroyed": 0,
+      "major": 0,
+      "minor": 6,
+      "no_damage": 231,
+      "unclassified": 0,
+      "total": 237,
+      "bbox": [
+        -99.18139699218152,
+        19.300141915701207,
+        -99.17667249625843,
+        19.304627597726792
+      ],
+      "start": [
+        19.300949338465813,
+        -99.18054658291537
+      ],
+      "goal": [
+        19.303820174962187,
+        -99.17752290552458
+      ],
+      "relative_dir": "mexico-earthquake/mexico-earthquake_00000116",
+      "bbox_fit_rmse_lon": 8.205255641928607e-09,
+      "bbox_fit_rmse_lat": 3.5290395163753152e-09
+    },
+    {
+      "scene_id": "mexico-earthquake_00000062",
+      "disaster": "mexico-earthquake",
+      "score": 5,
+      "destroyed": 0,
+      "major": 0,
+      "minor": 5,
+      "no_damage": 66,
+      "unclassified": 0,
+      "total": 71,
+      "bbox": [
+        -99.22382559424653,
+        19.26424616804422,
+        -99.21910092970383,
+        19.268732960040914
+      ],
+      "start": [
+        19.265053790603623,
+        -99.22297515462884
+      ],
+      "goal": [
+        19.267925337481508,
+        -99.21995136932152
+      ],
+      "relative_dir": "mexico-earthquake/mexico-earthquake_00000062",
+      "bbox_fit_rmse_lon": 2.2619863975424378e-09,
+      "bbox_fit_rmse_lat": 4.662500271829648e-09
+    }
+  ],
+  "skipped_scenes": [
+    {
+      "scene_id": "hurricane-harvey_00000219",
+      "disaster": "hurricane-harvey",
+      "reason": "Not enough label geometry to estimate bbox."
+    },
+    {
+      "scene_id": "palu-tsunami_00000156",
+      "disaster": "palu-tsunami",
+      "reason": "Not enough label geometry to estimate bbox."
+    },
+    {
+      "scene_id": "hurricane-harvey_00000322",
+      "disaster": "hurricane-harvey",
+      "reason": "Not enough label geometry to estimate bbox."
+    }
+  ]
+}

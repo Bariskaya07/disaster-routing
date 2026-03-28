@@ -27,6 +27,7 @@ DEMO_METADATA = DEMO_DIR / "metadata.json"
 DEMO_REMOTE_BASE = "https://raw.githubusercontent.com/Bariskaya07/disaster-routing/main/data/demo"
 DEMO_LIBRARY_DIR = Path(__file__).resolve().parent / "data" / "demo_library"
 DEMO_LIBRARY_MANIFEST = DEMO_LIBRARY_DIR / "manifest.json"
+DEMO_LIBRARY_REMOTE_BASE = "https://raw.githubusercontent.com/Bariskaya07/disaster-routing/main/data/demo_library"
 
 st.set_page_config(
     page_title="TUA Taktiksel Tahliye Sistemi",
@@ -74,6 +75,26 @@ def _download_demo_asset_if_missing(path: Path, remote_name: str) -> None:
         raise FileNotFoundError(f"Demo dosyası indirilemedi: {remote_url}") from error
 
 
+@st.cache_data(show_spinner=False)
+def _download_json(remote_url: str) -> dict:
+    try:
+        with urlopen(remote_url, timeout=20) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except URLError as error:
+        raise FileNotFoundError(f"Uzak JSON indirilemedi: {remote_url}") from error
+
+
+@st.cache_data(show_spinner=False)
+def _download_image_array(remote_url: str) -> np.ndarray:
+    try:
+        with urlopen(remote_url, timeout=30) as response:
+            data = response.read()
+    except URLError as error:
+        raise FileNotFoundError(f"Uzak görsel indirilemedi: {remote_url}") from error
+    with Image.open(BytesIO(data)) as image:
+        return np.asarray(image.convert("RGB"), dtype=np.uint8)
+
+
 def _ensure_local_demo_assets() -> None:
     if DEMO_METADATA.exists() and DEMO_PRE.exists() and DEMO_POST.exists():
         return
@@ -92,7 +113,10 @@ def _demo_assets_available() -> bool:
 @st.cache_data(show_spinner=False)
 def _load_demo_manifest() -> dict:
     if not DEMO_LIBRARY_MANIFEST.exists():
-        return {}
+        try:
+            return _download_json(f"{DEMO_LIBRARY_REMOTE_BASE}/manifest.json")
+        except FileNotFoundError:
+            return {}
     return json.loads(DEMO_LIBRARY_MANIFEST.read_text(encoding="utf-8"))
 
 
@@ -141,15 +165,20 @@ def _selected_demo_metadata(scene: dict | None) -> dict:
     if metadata_path.exists():
         metadata = parse_metadata(metadata_path)
     else:
-        metadata = parse_metadata(
-            {
-                "bbox": scene.get("bbox"),
-                "start": scene.get("start"),
-                "goal": scene.get("goal"),
-                "scene_id": scene.get("scene_id"),
-                "disaster": scene.get("disaster"),
-            }
-        )
+        relative_dir = str(scene.get("relative_dir", "")).strip("/")
+        if relative_dir:
+            remote_metadata = _download_json(f"{DEMO_LIBRARY_REMOTE_BASE}/{relative_dir}/metadata.json")
+            metadata = parse_metadata(remote_metadata)
+        else:
+            metadata = parse_metadata(
+                {
+                    "bbox": scene.get("bbox"),
+                    "start": scene.get("start"),
+                    "goal": scene.get("goal"),
+                    "scene_id": scene.get("scene_id"),
+                    "disaster": scene.get("disaster"),
+                }
+            )
     metadata.setdefault("scene_id", scene.get("scene_id"))
     metadata.setdefault("disaster", scene.get("disaster"))
     return metadata
@@ -160,16 +189,21 @@ def _load_demo_assets(scene: dict | None = None) -> tuple[np.ndarray, np.ndarray
         _ensure_local_demo_assets()
         return _read_image_path(DEMO_PRE), _read_image_path(DEMO_POST), _selected_demo_metadata(None)
 
-    if not _demo_scene_assets_available(scene):
-        raise FileNotFoundError(
-            f"Seçili demo sahnesi eksik: {_demo_scene_dir(scene)} altında pre_disaster.png, post_disaster.png veya metadata.json bulunamadı."
-        )
     scene_dir = _demo_scene_dir(scene)
-    return (
-        _read_image_path(scene_dir / "pre_disaster.png"),
-        _read_image_path(scene_dir / "post_disaster.png"),
-        _selected_demo_metadata(scene),
-    )
+    pre_path = scene_dir / "pre_disaster.png"
+    post_path = scene_dir / "post_disaster.png"
+    if pre_path.exists() and post_path.exists():
+        pre_image = _read_image_path(pre_path)
+        post_image = _read_image_path(post_path)
+    else:
+        relative_dir = str(scene.get("relative_dir", "")).strip("/")
+        if not relative_dir:
+            raise FileNotFoundError(
+                f"Seçili demo sahnesi eksik: {_demo_scene_dir(scene)} altında pre_disaster.png ve post_disaster.png bulunamadı."
+            )
+        pre_image = _download_image_array(f"{DEMO_LIBRARY_REMOTE_BASE}/{relative_dir}/pre_disaster.png")
+        post_image = _download_image_array(f"{DEMO_LIBRARY_REMOTE_BASE}/{relative_dir}/post_disaster.png")
+    return (pre_image, post_image, _selected_demo_metadata(scene))
 
 
 def _format_scene_option(scene: dict) -> str:

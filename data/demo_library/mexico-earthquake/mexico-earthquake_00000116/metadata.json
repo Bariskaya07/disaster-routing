@@ -1,0 +1,25 @@
+{
+  "scene_id": "mexico-earthquake_00000116",
+  "disaster": "mexico-earthquake",
+  "bbox": [
+    -99.18139699218152,
+    19.300141915701207,
+    -99.17667249625843,
+    19.304627597726792
+  ],
+  "start": [
+    19.300949338465813,
+    -99.18054658291537
+  ],
+  "goal": [
+    19.303820174962187,
+    -99.17752290552458
+  ],
+  "crs": "EPSG:4326",
+  "bbox_estimation": {
+    "method": "affine-fit-from-xview2-label-pairs",
+    "fit_rmse_lon": 8.205255641928607e-09,
+    "fit_rmse_lat": 3.5290395163753152e-09,
+    "point_pairs": 7535.0
+  }
+}
