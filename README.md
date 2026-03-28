@@ -110,6 +110,17 @@ python inference.py \
 
 This repository is configured for a Docker-based Hugging Face Space because the built-in Streamlit SDK is deprecated by Hugging Face documentation.
 
+### Recommended public deployment flow
+
+1. Create a **public Docker Space** named `BarisKaya/disaster-routing`
+2. In the GitHub repository, add a repository secret named `HF_TOKEN`
+3. Push to `main`
+4. The included GitHub Action will mirror the repository into the Space automatically
+
+Workflow file:
+
+- `.github/workflows/sync-to-hf-space.yml`
+
 Recommended environment variables for Space deployment:
 
 - `HF_MODEL_REPO_ID`
