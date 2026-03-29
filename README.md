@@ -14,7 +14,10 @@ app_port: 7860
 
 ---
 
-![Palu 093](/media/projects/images/69c542165f9c30c3f68df3bb/1774766894160_d5re2j.png)
+<p align="center">
+  <img src="assets/presentation/palu_00000093_demo.png" alt="Palu 093 Demo" width="48%" />
+  <img src="assets/presentation/palu_00000180_demo.png" alt="Palu 180 Demo" width="48%" />
+</p>
 
 > **NOT:** Yukarıdaki ekran görüntüsü, tsunami afet senaryosuna ait örnek bir analiz çıktısıdır.
 
