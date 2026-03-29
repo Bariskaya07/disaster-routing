@@ -73,6 +73,11 @@ bulunmaktadır.
 
 ### Yapay Zeka Mimarisi
 
+<p align="center">
+  <img src="assets/architecture/dpn_unet_architecture.png" alt="DPN U-Net Lokalizasyon Mimarisi" width="48%" />
+  <img src="assets/architecture/siamese_dpn_architecture.png" alt="Siamese DPN Hasar Sınıflandırma Mimarisi" width="48%" />
+</p>
+
 Sistemin yapay zeka omurgasında **Siamese-UNet** tabanlı bir CNN yapısı kullanılmıştır. Bu model xView2 afet veri seti üzerinde eğitilmiş olup, afet öncesi ve afet sonrası uydu görüntüleri arasındaki değişimi öğrenir. Hem yapı tespiti hem de hasar seviyelendirmesi yapabilmektedir.
 
 **İlk model — DPN92 encoder tabanlı U-Net lokalizasyon ağı:** Afet öncesi görüntü üzerinden çalışarak görüntü içindeki yapı ayak izlerini piksel seviyesinde çıkarır. Yani sistem önce *"nerede bina var?"* sorusunu çözer. DPN92 omurgası çok seviyeli uzamsal öznitelikler çıkarırken, U-Net decoder yapısı bu öznitelikleri yukarı örnekleyerek tam çözünürlükte bina maskesi üretir.
