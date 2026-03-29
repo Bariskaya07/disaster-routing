@@ -1,5 +1,5 @@
 ---
-title:  Disaster Routing MVP
+title: Otonom Taktiksel Tahliye ve Kinetik Risk Haritalama Sistemi
 emoji: 🛰️
 colorFrom: gray
 colorTo: red
@@ -7,96 +7,179 @@ sdk: docker
 app_port: 7860
 ---
 
-# Disaster Routing MVP
+# Otonom Taktiksel Tahliye ve Kinetik Risk Haritalama Sistemi
 
-This repository implements a hackathon-ready MVP for disaster response routing from pre/post satellite imagery.
+<!-- Sistemin çalışma videosunu buraya ekleyin -->
+<!-- ![Sistem Demo Videosu](video_linki) -->
 
-## What It Does
+---
 
-- Runs a dual-stage xView2-compatible DPN pipeline:
-  - `dpn_unet` for building localization
-  - `dpn_seamese_unet_shared` for damage classification
-- Converts building damage output into a georeferenced damage raster
-- Pulls a real street network with OSMnx, projects it to a metric CRS, snaps operator GPS points to routable nodes, and solves:
-  - shortest-length route
-  - damage-aware safest route
-- Serves the full workflow through a Streamlit + Folium operator console
+![Palu 093](/media/projects/images/69c542165f9c30c3f68df3bb/1774766894160_d5re2j.png)
 
-## Local Weight Strategy
+> **NOT:** Yukarıdaki ekran görüntüsü, tsunami afet senaryosuna ait örnek bir analiz çıktısıdır.
 
-The repository is designed with `local-first, HF-fallback` loading:
+- **1 –** Uydu görüntülerindeki **yeşil binalar** zarar görmemiş yapıları, **kırmızı binalar** zarar gören yapıları temsil eder.
+- **2 –** Taktiksel operasyon haritasında **yeşil nokta** başlangıç noktasını, **siyah nokta** bitiş noktasını gösterir.
+- **3 –** **Kırmızı kesikli yol** afet olmadan önceki en kısa rotayı temsil eder. **Yeşil kalın yol** ise afet sonrası hesaplanan en güvenli ve en kısa tahliye koridorunu gösterir.
+- **4 –** **Mavi nokta** AFAD veya benzeri ekiplerin operasyon merkezini kuracağı en uygun konumu önerir. **Mor bölgeler** yıkık yapıların taktiksel haritadaki iz düşümüdür; operasyon merkezinin enkaz alanına kurulmasını engeller.
 
-1. explicit environment override paths
-2. project-root local checkpoint files
-3. Hugging Face model repository cache
+---
 
-Expected checkpoint names:
+## Projenin Tanımı
 
-- `localization_dpn_unet_dpn92_0_best_dice`
-- `pseudo_dpn_seamese_unet_shared_dpn92_0_best_xview`
+Bu proje, afet öncesi ve afet sonrası uydu görüntülerini yapay zeka ile karşılaştırarak hasarlı yapı kümelerini tespit eden ve bu bilgiyi gerçek yol ağı ile birleştirip kurtarma ekipleri için **güvenli tahliye koridoru** üreten bir karar destek sistemidir.
 
-These files are ignored by git on purpose.
+Afet anlarında en büyük sorun, sahadaki hasarın hızlı ve doğru şekilde okunamaması, ekiplerin hangi güzergahı kullanacağının net belirlenememesi ve operasyonun gecikmesidir. Çalışmamız, uydu verisini doğrudan operasyonel karara dönüştürerek bu problemi çözmeyi hedeflemektedir.
 
-## Metadata Contract
+---
 
-Routing requires a metadata JSON payload with a geographic bounding box:
+## Veri Seti
 
-```json
-{
-  "scene_id": "ankara-demo-01",
-  "bbox": [32.8000, 39.8500, 32.8100, 39.8600],
-  "start": [39.8510, 32.8010],
-  "goal": [39.8590, 32.8090]
-}
-```
+Sistemin test edildiği açık veri kaynağı **xView2 (xBD)** setidir. Bu veri setinde aynı bölgeye ait:
 
-- `bbox` order: `[min_lon, min_lat, max_lon, max_lat]`
-- `start` and `goal` order: `[lat, lon]`
+- Afet öncesi yüksek çözünürlüklü RGB uydu görüntüsü
+- Afet sonrası yüksek çözünürlüklü RGB uydu görüntüsü
+- Bina poligonları ve hasar sınıf etiketleri
 
-If bbox is missing, the application will still run inference but will intentionally disable routing.
+bulunmaktadır.
 
-## Demo-First Behavior
+| Parametre | Değer |
+|-----------|-------|
+| Görüntü boyutu | 1024 × 1024 piksel |
+| Kanal sayısı | 3 (RGB) |
+| Uzamsal çözünürlük | ~0.3 metre |
+| Sınıflar | background · no-damage · minor-damage · major-damage · destroyed |
 
-The Streamlit app now starts in demo mode by default so it can be opened directly by judges without uploading files first.
+---
 
-- select a disaster type
-- select a scene
-- click `Demo Yükle`
-- click `Analizi Başlat`
+## Proje İş Akışı
 
-## Demo Library Workflow
+1. Afet öncesi ve afet sonrası uydu görüntüleri sisteme yüklenir.
+2. Yapay zeka modeli binaları tespit eder ve hasar seviyelerini sınıflandırır.
+   - `dpn_unet` → bina lokalizasyonu
+   - `dpn_seamese_unet_shared` → hasar sınıflandırma
+3. Hasarlı ve yıkık yapı katmanı coğrafi olarak harita üzerine oturtulur.
+4. Bölgenin gerçek yol ağı **OpenStreetMap** verisi üzerinden çekilir.
+5. Afet öncesi referans rota ve afet sonrası güvenli rota hesaplanır.
+6. Uygun açık alanlar taranarak **operasyon üssü adayı** önerilir.
+7. Tüm sonuçlar tek ekranda görselleştirilerek operatöre sunulur.
 
-The xView2 archive labels are not the same as the application's lightweight metadata contract.
+---
 
-- xView2 label files contain building polygons and damage annotations
-- the app expects a compact `metadata.json` with `bbox`, optional `start`, and optional `goal`
+## Teknik Yapı
 
-Recommended local workflow:
+### Yapay Zeka Mimarisi
 
-1. Build a candidate library from `hold_images_labels_targets.tar`
-2. Inspect `data/demo_library/manifest.json`
-3. Activate one scene into `data/demo/`
+Sistemin yapay zeka omurgasında **Siamese-UNet** tabanlı bir CNN yapısı kullanılmıştır. Bu model xView2 afet veri seti üzerinde eğitilmiş olup, afet öncesi ve afet sonrası uydu görüntüleri arasındaki değişimi öğrenir. Hem yapı tespiti hem de hasar seviyelendirmesi yapabilmektedir.
 
-```bash
-/home/bariskaya/Projelerim/UAV/venv/bin/python scripts/prepare_demo_library.py --activate-scene santa-rosa-wildfire_00000157
-```
+**İlk model — DPN92 encoder tabanlı U-Net lokalizasyon ağı:** Afet öncesi görüntü üzerinden çalışarak görüntü içindeki yapı ayak izlerini piksel seviyesinde çıkarır. Yani sistem önce *"nerede bina var?"* sorusunu çözer. DPN92 omurgası çok seviyeli uzamsal öznitelikler çıkarırken, U-Net decoder yapısı bu öznitelikleri yukarı örnekleyerek tam çözünürlükte bina maskesi üretir.
 
-If you want to switch the active scene later:
+**İkinci model — Shared-weight Siamese U-Net hasar sınıflandırma ağı:** Afet öncesi ve afet sonrası görüntüleri iki ayrı giriş olarak alır; ancak iki kolda aynı encoder ağırlıkları paylaşılır. Böylece model iki zaman anını aynı temsil uzayında analiz ederek zamansal farkı öğrenir. Decoder tarafında birleştirilen özellikler piksel bazında hasar sınıfı üretir:
 
-```bash
-/home/bariskaya/Projelerim/UAV/venv/bin/python scripts/activate_demo_scene.py data/demo_library/palu-tsunami/palu-tsunami_00000180
-```
+| Sınıf | Açıklama |
+|-------|----------|
+| 0 | Hasarsız |
+| 1 | Az Hasarlı |
+| 2 | Ağır Hasarlı |
+| 3 | Yıkık |
 
-## Quick Start
+Bu yaklaşımın teknik avantajı: sistem tek bir görüntüye bakarak statik sınıflandırma yapmak yerine, iki zamanlı veri üzerinden **değişimi** öğrenir. Böylece bina kaybı, çökme ve yapısal bozulma gibi afet etkileri daha güvenilir şekilde yakalanır.
+
+### Eğitim Parametreleri
+
+**Bina Lokalizasyonu (DPN92 U-Net):**
+
+| Parametre | Değer |
+|-----------|-------|
+| Batch size | 8 |
+| Epoch | 100 |
+| Optimizer | FusedAdam |
+| Learning rate | 1e-4 |
+| Crop boyutu | 512 × 512 |
+
+**Hasar Sınıflandırma (Siamese U-Net):**
+
+| Parametre | Değer |
+|-----------|-------|
+| Batch size | 6 |
+| Epoch | 60 |
+| Optimizer | FusedAdam |
+| Learning rate | 1e-4 |
+| Crop boyutu | 512 × 512 |
+
+**Augmentation teknikleri:** RandomSizedCrop · HorizontalFlip · VerticalFlip · Transpose · ImageCompression · RandomBrightnessContrast · RandomGamma
+
+### Model Performans Metrikleri (Test Seti)
+
+| Metrik | F1 Skor |
+|--------|---------|
+| **Overall** | **0.8076** |
+| Localization | 0.8632 |
+| Hasarsız | 0.9256 |
+| Az Hasarlı | 0.6389 |
+| Ağır Hasarlı | 0.7730 |
+| Yıkık | 0.8590 |
+
+---
+
+## Coğrafi Hizalama
+
+Yapay zeka katmanından elde edilen bina ve hasar maskeleri, bounding box meta verisi kullanılarak **WGS84 (EPSG:4326)** koordinat sistemine oturtulur. Böylece piksel uzayındaki hasar sonucu, gerçek dünya enlem-boylam koordinatlarına bağlanır. Bu katman daha sonra OpenStreetMap'ten çekilen yol ağı ile birleştirilir.
+
+---
+
+## Rota Planlama
+
+Rota planlama tarafında sistem iki ayrı güzergah üretir:
+
+1. **Afet öncesi referans en kısa rota** — haritadaki kırmızı kesikli çizgi
+2. **Afet sonrası güvenli tahliye rotası** — haritadaki yeşil kalın çizgi
+
+Güvenli rota yalnızca mesafeye göre değil, ağır hasarlı ve yıkık yapı kümelerinin çevresine yayılan risk alanı da hesaba katılarak çizilir. Yol segmentleri örneklenir, yakındaki hasar etkisi ölçülür ve **A\* algoritması** ile daha emniyetli koridor seçilir. Böylece sistem yalnızca görüntü yorumlayan bir yapay zeka olmaktan çıkar, doğrudan **taktiksel karar üreten bir otonomi katmanına** dönüşür.
+
+### Ağır Hasarlı ve Yıkık Yapı Kümelerinin Çevresine Yayılan Risk Alanı Hesabı
+
+A\* algoritmasının güvenli rotayı hesaplayabilmesi için, modelden çıkan maskelerin sürekli bir risk alanına dönüştürülmesi gerekmektedir. Eğer yıkık veya ağır hasarlı bir bina mevcutsa, kurtarma ekiplerinin o yönden gitmemesi sağlanmalıdır. Bu hesap aşağıdaki adımlarla yapılır:
+
+**1 – Risk çekirdeği ve kinetik saçılma:** Modelden çıkan hasar maskesinde yalnızca **2 (ağır hasarlı)** ve **3 (yıkık)** sınıfları risk çekirdeği olarak alınır. Bu çekirdek üzerine morfolojik temizlik, genişletme (dilation) ve Gaussian bulanıklaştırma uygulanarak 0–255 aralığına normalize edilir. Böylece yıkılan bir bina yalnızca kendi pikselinde değil, çevresine de taşan bir etki alanı oluşturur — molozun sokağa taşma dinamiği simüle edilmiş olur.
+
+**2 – Metrik yol örneklemesi:** Her yol segmenti yaklaşık **10 metrede bir** örneklenir. Örneğin 100 metrelik bir yol üzerinde 10'dan fazla kontrol noktası oluşturulur. Her kontrol noktası harita koordinatından raster piksel indeksine dönüştürülerek ısı haritasından **4 piksellik komşuluk yarıçapında** maksimum risk değeri okunur. Bu sayede yol tam enkaz üzerinde olmasa bile hemen yanındaki yıkıntıdan etkilenir.
+
+**3 – Yüzdelik tabanlı risk kararı:** Bir yol üzerindeki tüm örneklerin ortalaması değil, **%85'lik yüzdelik değeri** alınır. Yolun güvenliği en temiz noktasına göre değil, en riskli bölgesine göre belirlenir.
+
+**4 – Eksponansiyel maliyet formülü:**
+
+$$safe\_weight = length\_m \cdot \exp(3.5 \cdot damage\_norm)$$
+
+Burada `length_m` yolun metre cinsinden uzunluğu, `damage_norm = damage_score / 255.0` ise normalize edilmiş risk skorudur. Risk sıfırsa maliyet yalnızca mesafedir; risk arttıkça maliyet doğrusal değil **eksponansiyel** olarak büyür. Böylece A\* algoritması, kısa ama riskli bir koridoru otomatik olarak reddeder ve ekipleri enkazdan arındırılmış güvenli tahliye koridoruna yönlendirir.
+
+---
+
+## Arayüz
+
+Tüm çıktılar **Streamlit** ve **Folium** tabanlı operatör arayüzünde birleştirilir. Kullanıcı aynı ekranda:
+
+- Afet öncesi ve sonrası uydu görüntüsünü
+- Bina tespit maskesini ve hasar sınıflarını
+- Kinetik risk ısı haritasını
+- Önerilen operasyon üssünü
+- Referans (kırmızı) ve güvenli (yeşil) tahliye rotalarını
+- Risk azalma oranı ve rota uzama metriklerini
+
+tek bakışta görebilir. Sistem, CNN tabanlı algı modülü ile GIS tabanlı rota optimizasyonunu tek karar destek platformunda birleştirmiş olur.
+
+---
+
+## Kurulum ve Çalıştırma
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## CLI Inference
+### CLI ile Çıkarım
 
 ```bash
 python inference.py \
@@ -106,32 +189,7 @@ python inference.py \
   --output-dir outputs/inference
 ```
 
-## Hugging Face Spaces Deployment
-
-This repository is configured for a Docker-based Hugging Face Space because the built-in Streamlit SDK is deprecated by Hugging Face documentation.
-
-### Recommended public deployment flow
-
-1. Create a **public Docker Space** named `BarisKaya/disaster-routing`
-2. In the GitHub repository, add a repository secret named `HF_TOKEN`
-3. Push to `main`
-4. The included GitHub Action will mirror the repository into the Space automatically
-
-Workflow file:
-
-- `.github/workflows/sync-to-hf-space.yml`
-
-Recommended environment variables for Space deployment:
-
-- `HF_MODEL_REPO_ID`
-- `HF_MODEL_REVISION` (optional)
-- `HF_TOKEN` (optional for private model repos)
-- `LOCALIZATION_WEIGHTS_PATH` (optional override)
-- `DAMAGE_WEIGHTS_PATH` (optional override)
-
-If the model weights are not available in the Space environment, the app still boots and falls back to a lightweight difference-based demo mode.
-
-## Tests
+### Testler
 
 ```bash
 python -m unittest discover -s tests -v

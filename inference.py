@@ -91,8 +91,16 @@ def _load_checkpoint_state_dict(path: Path) -> dict[str, torch.Tensor]:
     return {key.replace("module.", ""): value for key, value in checkpoint.items()}
 
 
-def _build_damage_raster(damage_mask: np.ndarray) -> np.ndarray:
-    return np.where(damage_mask > 0, 255, 0).astype(np.uint8)
+def _build_damage_raster(heavy_damage_mask: np.ndarray) -> np.ndarray:
+    seed = (heavy_damage_mask > 0).astype(np.uint8) * 255
+    if seed.max() == 0:
+        return seed
+
+    cleaned = cv2.morphologyEx(seed, cv2.MORPH_OPEN, np.ones((3, 3), dtype=np.uint8), iterations=1)
+    inflated = cv2.dilate(cleaned, np.ones((5, 5), dtype=np.uint8), iterations=1)
+    blurred = cv2.GaussianBlur(inflated, (0, 0), sigmaX=9, sigmaY=9)
+    normalized = cv2.normalize(blurred, None, 0, 255, cv2.NORM_MINMAX)
+    return normalized.astype(np.uint8)
 
 
 def _build_fallback_outputs(
@@ -113,7 +121,7 @@ def _build_fallback_outputs(
 
     heavy_damage_mask = np.isin(damage_mask, (2, 3)).astype(np.uint8)
     building_mask = np.ones_like(diff, dtype=np.uint8)
-    damage_raster = _build_damage_raster(damage_mask)
+    damage_raster = _build_damage_raster(heavy_damage_mask)
 
     georef = None
     bbox = metadata.get("bbox")
@@ -205,7 +213,7 @@ class InferenceEngine:
         damage_mask = np.where(damage_argmax <= 1, 0, damage_argmax - 1).astype(np.uint8)
         damage_mask = np.where(building_mask > 0, damage_mask, 0).astype(np.uint8)
         heavy_damage_mask = np.isin(damage_mask, (2, 3)).astype(np.uint8)
-        damage_raster = _build_damage_raster(damage_mask)
+        damage_raster = _build_damage_raster(heavy_damage_mask)
 
         return InferenceArtifacts(
             pre_image=pre_image,
