@@ -14,15 +14,7 @@ Afet anlarında en büyük sorun, sahadaki hasarın hızlı ve doğru şekilde o
 
 ## Otonom Taktiksel Tahliye Sistemi Örnek Kullanım Videosu
 
-<p align="center">
-  <a href="assets/presentation/otonom_taktiksel_tahliye_ornek_kullanim_small.mp4">
-    <img src="assets/presentation/palu_00000093_demo.png" alt="Otonom Taktiksel Tahliye Sistemi Örnek Kullanım Videosu" width="78%" />
-  </a>
-</p>
-
-<p align="center">
-  <a href="assets/presentation/otonom_taktiksel_tahliye_ornek_kullanim_small.mp4"><strong>▶ Örnek kullanım videosunu aç</strong></a>
-</p>
+https://github.com/user-attachments/assets/f3820e1a-9db5-49f2-a26e-c04d900cfd89
 
 ---
 
