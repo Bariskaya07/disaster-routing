@@ -1,13 +1,16 @@
----
-title: Otonom Taktiksel Tahliye ve Kinetik Risk Haritalama Sistemi
-emoji: 🛰️
-colorFrom: gray
-colorTo: red
-sdk: docker
-app_port: 7860
+# Otonom Taktiksel Tahliye ve Kinetik Risk Haritalama Sistemi
+
+## Projenin Tanımı
+
 ---
 
-# Otonom Taktiksel Tahliye ve Kinetik Risk Haritalama Sistemi
+Bu proje, afet öncesi ve afet sonrası uydu görüntülerini yapay zeka ile karşılaştırarak hasarlı yapı kümelerini tespit eden ve bu bilgiyi gerçek yol ağı ile birleştirip kurtarma ekipleri için **güvenli tahliye koridoru** üreten bir karar destek sistemidir.
+
+Afet anlarında en büyük sorun, sahadaki hasarın hızlı ve doğru şekilde okunamaması, ekiplerin hangi güzergahı kullanacağının net belirlenememesi ve operasyonun gecikmesidir. Çalışmamız, uydu verisini doğrudan operasyonel karara dönüştürerek bu problemi çözmeyi hedeflemektedir.
+
+---
+
+
 
 ## Otonom Taktiksel Tahliye Sistemi Örnek Kullanım Videosu
 
@@ -35,15 +38,8 @@ app_port: 7860
 - **3 –** **Kırmızı kesikli yol** afet olmadan önceki en kısa rotayı temsil eder. **Yeşil kalın yol** ise afet sonrası hesaplanan en güvenli ve en kısa tahliye koridorunu gösterir.
 - **4 –** **Mavi nokta** AFAD veya benzeri ekiplerin operasyon merkezini kuracağı en uygun konumu önerir. **Mor bölgeler** yıkık yapıların taktiksel haritadaki iz düşümüdür; operasyon merkezinin enkaz alanına kurulmasını engeller.
 
----
 
-## Projenin Tanımı
 
-Bu proje, afet öncesi ve afet sonrası uydu görüntülerini yapay zeka ile karşılaştırarak hasarlı yapı kümelerini tespit eden ve bu bilgiyi gerçek yol ağı ile birleştirip kurtarma ekipleri için **güvenli tahliye koridoru** üreten bir karar destek sistemidir.
-
-Afet anlarında en büyük sorun, sahadaki hasarın hızlı ve doğru şekilde okunamaması, ekiplerin hangi güzergahı kullanacağının net belirlenememesi ve operasyonun gecikmesidir. Çalışmamız, uydu verisini doğrudan operasyonel karara dönüştürerek bu problemi çözmeyi hedeflemektedir.
-
----
 
 ## Veri Seti
 
